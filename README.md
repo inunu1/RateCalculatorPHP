@@ -1,4 +1,4 @@
-## RateCalculatorPHP
+## RateCalculator
 
 環境構築手順
 
