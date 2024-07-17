@@ -15,3 +15,19 @@
 
     上記ファイルのSESSION_DRIVERがdatabaseだと起動しないので、fileに変更すると起動する
     
+3:phpmyadminの追加
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+          - mysql:mysql
+        ports:
+          - 8080:80
+        environment:
+            MYSQL_USERNAME: '{DB_USERNAME}'
+            MYSQL_ROOT_PASSWORD: '{DB_PASSWORD}'
+            PMA_HOST: mysql
+        networks:
+            - sail
+
+docker-compose.ymlに上記ソースを追記してphpmyadminが使えるようになった。
