@@ -31,3 +31,9 @@
             - sail
 
 docker-compose.ymlに上記ソースを追記してphpmyadminが使えるようになった。
+
+4:ログイン認証実装
+
+    composer require laravel/breeze --dev
+
+上記コマンドを打つ
