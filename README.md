@@ -36,4 +36,8 @@ docker-compose.ymlに上記ソースを追記してphpmyadminが使えるよう�
 
     composer require laravel/breeze --dev
 
-上記コマンドを打つ
+    php artisan breeze:install
+
+    ./vendor/bin/sail artisan migrate
+
+上記コマンドを上から順に打ち、Localhostにアクセスすると、LaravelのtopページにLoginとregisterのリンクが追加される。
