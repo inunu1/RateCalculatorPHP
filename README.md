@@ -41,3 +41,15 @@ docker-compose.ymlに上記ソースを追記してphpmyadminが使えるよう�
     ./vendor/bin/sail artisan migrate
 
 上記コマンドを上から順に打ち、Localhostにアクセスすると、LaravelのtopページにLoginとregisterのリンクが追加される。
+
+5:日本語化
+
+    config/app.phpのtimezoneを'Asia/Tokyo'に
+
+    config/app.phpのLocaleを'Ja'に
+
+    https://github.com/askdkc/breezejp?tab=readme-ov-file#readmeに記載の下記コマンドを入力
+
+    composer require askdkc/breezejp --dev
+
+    ./vendor/bin/sail artisan breezejp
