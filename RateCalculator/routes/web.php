@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+//test画面を追加してみた
+Route::get('/test', [TestController::class, 'test'])->name('test');
 
 Route::get('/', function () {
     return view('welcome');
