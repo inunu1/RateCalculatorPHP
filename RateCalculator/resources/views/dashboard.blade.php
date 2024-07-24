@@ -11,6 +11,10 @@
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
                     <br>
+                    <form action="{{route('players.create')}}" method = "GET">
+                    <button type="submit">会員登録<button>
+                    </form>
+
                     <x-primary-button>
                         ボタン
                     </x-primary-button>

@@ -1,6 +1,6 @@
 # 会員テーブル設計
 
-| 列名 (Japanese)      | 列名 (English)     | 型               | 属性                  | 説明                |
+| 論理名 (Japanese)      | 物理名 (English)     | 型               | 属性                  | 説明                |
 |---------------------|--------------------|------------------|-----------------------|---------------------|
 | 会員ID              | player_id          | unsigned integer | primary key, auto increment | ユニークな会員識別子 |
 | 姓                  | last_name          | string           | not null              | 会員の苗字          |

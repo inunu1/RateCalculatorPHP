@@ -3,9 +3,13 @@
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlayerController;
 
 //test画面を追加してみた
 Route::get('/test', [TestController::class, 'test'])->name('test');
+
+//会員登録画面用
+Route::get('/players/create', [PlayerController::class, 'showCreateForm'])->name('players.create');
 
 Route::get('/', function () {
     return view('welcome');
