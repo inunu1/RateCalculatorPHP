@@ -14,6 +14,12 @@
                             会員登録
                         </x-primary-button>
                     </a>
+
+                    <a href="{{ route('players.manage') }}">
+                        <x-primary-button>
+                            会員管理
+                        </x-primary-button>
+                    </a>
                 </div>
             </div>
         </div>

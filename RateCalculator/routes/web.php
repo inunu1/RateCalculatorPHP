@@ -11,6 +11,9 @@ Route::get('/test', [TestController::class, 'test'])->name('test');
 //会員登録画面用
 Route::get('/players/create', [PlayerController::class, 'showCreateForm'])->name('players.create');
 
+//会員管理画面用
+Route::get('/players/Manage', [PlayerController::class, 'showManage'])->name('players.manage');
+
 Route::get('/', function () {
     return view('welcome');
 });
