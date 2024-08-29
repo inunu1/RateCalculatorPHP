@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'last_name', 'first_name', 'rating', 'registered_at', 'updated_at', 'calcrate_flag'
+    ];
+
+    protected $casts = [
+        'calcrate_flag' => 'boolean',
+        'registered_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }
