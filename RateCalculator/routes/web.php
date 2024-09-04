@@ -14,6 +14,10 @@ Route::get('/players/create', [PlayerController::class, 'showCreateForm'])->name
 //会員管理画面用
 Route::get('/players/Manage', [PlayerController::class, 'showManage'])->name('players.manage');
 
+//会員登録完了画面用
+Route::post('/player/store', [PlayerController::class, 'store'])->name('player.store');
+Route::get('/player/create', [PlayerController::class, 'create'])->name('players.create');
+
 Route::get('/', function () {
     return view('welcome');
 });

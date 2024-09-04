@@ -15,12 +15,6 @@
                         </x-primary-button>
                     </a>
 
-                    <a href="{{ route('players.create') }}">
-                        <x-primary-button>
-                            会員登録
-                        </x-primary-button>
-                    </a>
-
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr>
@@ -30,6 +24,7 @@
                                 <th class="py-2 px-4 border-b">レート</th>
                                 <th class="py-2 px-4 border-b">更新日</th>
                                 <th class="py-2 px-4 border-b">登録日</th>
+                                <th class="py-2 px-4 border-b">操作</th>
                             </tr>
                         </thead>
 
@@ -42,6 +37,7 @@
                                 <td class="py-2 px-4 border-b">{{$player -> rating}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> created_at}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> updated_at}}</td>
+                                <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->
                             </tr>
                             @endforeach
                         </tbody>
