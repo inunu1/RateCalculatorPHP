@@ -18,7 +18,7 @@ class PlayerController extends Controller
         return view('players/create');
     }
 
-    //会員登録完了画面に遷移するメソッド
+    //会員画面に遷移するメソッド
     public function store(Request $request)
     {
         // バリデーション
@@ -42,5 +42,15 @@ class PlayerController extends Controller
 
         return view('players/manage', ['players' =>$players]);
     } 
+
+    //会員削除処理
+    public function delete(int $id)
+    {
+        $player = Player::find($id);
+
+        $player->delete();
+
+        return redirect()->route('players.manage')->with('success', '会員を削除しました。');
+    }
 }
 
