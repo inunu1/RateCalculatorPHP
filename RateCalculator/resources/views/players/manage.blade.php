@@ -38,6 +38,20 @@
                                 <td class="py-2 px-4 border-b">{{$player -> created_at}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> updated_at}}</td>
                                 <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->
+                                <td>
+                                    <a href="{{ route('players.create') }}">
+                                        <x-primary-button>
+                                            編集
+                                        </x-primary-button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('players.create') }}">
+                                        <x-primary-button>
+                                            出禁
+                                        </x-primary-button>
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
