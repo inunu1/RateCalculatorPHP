@@ -8,17 +8,12 @@ use App\Models\Player;
 class PlayerController extends Controller
 {
     //会員登録画面に遷移するメソッド
-    public function showCreateForm()
-    {
-        return view('players/create');
-    }
-
     public function create()
     {
         return view('players/create');
     }
 
-    //会員画面に遷移するメソッド
+    //会員登録時に動くメソッド
     public function store(Request $request)
     {
         // バリデーション

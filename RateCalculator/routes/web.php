@@ -8,13 +8,10 @@ use App\Http\Controllers\PlayerController;
 //test画面を追加してみた
 Route::get('/test', [TestController::class, 'test'])->name('test');
 
-//会員登録画面用
-//Route::get('/players/create', [PlayerController::class, 'showCreateForm'])->name('players.create');
-
 //会員管理画面用
 Route::get('/players/Manage', [PlayerController::class, 'showManage'])->name('players.manage');
 
-//会員登録完了画面用
+//会員登録画面用
 Route::post('/player/store', [PlayerController::class, 'store'])->name('player.store');
 Route::get('/player/create', [PlayerController::class, 'create'])->name('players.create');
 
