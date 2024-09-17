@@ -47,5 +47,11 @@ class PlayerController extends Controller
 
         return redirect()->route('players.manage')->with('success', '会員を削除しました。');
     }
+
+    //会員情報更新処理
+    public function update(int $id)
+    {
+        $player = Player::find($id);
+    }
 }
 
