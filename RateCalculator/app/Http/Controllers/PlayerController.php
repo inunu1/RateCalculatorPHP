@@ -8,13 +8,13 @@ use App\Models\Player;
 class PlayerController extends Controller
 {
     //会員登録画面に遷移するメソッド
-    public function create()
+    public function showCreateForm()
     {
         return view('players/create');
     }
 
     //会員登録時に動くメソッド
-    public function store(Request $request)
+    public function create(Request $request)
     {
         // バリデーション
         $validatedData = $request->validate([
@@ -52,6 +52,8 @@ class PlayerController extends Controller
     public function update(int $id)
     {
         $player = Player::find($id);
+
+        return view('players/update');
     }
 }
 

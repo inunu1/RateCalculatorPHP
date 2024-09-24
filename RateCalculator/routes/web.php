@@ -18,6 +18,9 @@ Route::get('/player/create', [PlayerController::class, 'create'])->name('players
 //会員削除処理
 Route::post('/players/{id}/delete', [PlayerController::class, 'delete'])->name('players.delete');
 
+//会員更新処理
+Route::post('/players/{id}/update', [PlayerController::class, 'update'])->name('players.update');
+
 Route::get('/', function () {
     return view('welcome');
 });
