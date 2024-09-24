@@ -35,7 +35,7 @@ class PlayerController extends Controller
         //管理画面にプレイヤーを全件表示
         $players = Player::all();
 
-        return view('players/manage', ['players' =>$players]);
+        return view('players/index', ['players' =>$players]);
     } 
 
     //会員削除処理
@@ -45,7 +45,7 @@ class PlayerController extends Controller
 
         $player->delete();
 
-        return redirect()->route('players.manage')->with('success', '会員を削除しました。');
+        return redirect()->route('players.index')->with('success', '会員を削除しました。');
     }
 
     //会員情報更新処理
