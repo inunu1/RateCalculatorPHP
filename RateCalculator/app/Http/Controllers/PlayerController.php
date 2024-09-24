@@ -30,7 +30,7 @@ class PlayerController extends Controller
     }
 
     //会員管理画面に遷移するメソッド
-    public function showManage()
+    public function showIndex()
     {
         //管理画面にプレイヤーを全件表示
         $players = Player::all();
@@ -53,7 +53,7 @@ class PlayerController extends Controller
     {
         $player = Player::find($id);
 
-        return view('players/update');
+        return view('players/update', ['players' =>$players]);
     }
 }
 
