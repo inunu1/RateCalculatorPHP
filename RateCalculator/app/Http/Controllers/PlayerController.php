@@ -49,11 +49,32 @@ class PlayerController extends Controller
     }
 
     //会員情報更新処理
-    public function update(int $id)
+    public function edit(int $id)
     {
         $player = Player::find($id);
 
-        return view('players/update', ['players' =>$players]);
+        return view('players/edit', ['player' =>$player]);
+    }
+
+    //
+    public function update(int $id,Request $request)
+    {
+        // バリデーション
+        $validatedData = $request->validate([
+            'last_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'rating' => 'required|integer',
+        ]);
+
+        $player = Player::find($id);
+        $player->last_name = $request ->last_name;
+        $player->first_name = $request ->first_name; 
+        $player->rating = $request ->rating;
+
+        //データの保存
+        $player->update();
+
+        return redirect()->route('players.edit',['id'=>$id])->with('success', '会員情報を更新しました。');
     }
 }
 
