@@ -14,7 +14,7 @@ class PlayerController extends Controller
     }
 
     //会員登録時に動くメソッド
-    public function create(Request $request)
+    public function store(Request $request)
     {
         // バリデーション
         $validatedData = $request->validate([

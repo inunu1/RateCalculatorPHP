@@ -11,7 +11,7 @@ Route::get('/test', [TestController::class, 'test'])->name('test');
 // 会員管理関連のルーティング
 Route::prefix('players')->group(function () {
     Route::get('index', [PlayerController::class, 'showIndex'])->name('players.index');
-    Route::get('create', [PlayerController::class, 'create'])->name('players.create');
+    Route::get('create', [PlayerController::class, 'showCreateForm'])->name('players.create');
     Route::post('store', [PlayerController::class, 'store'])->name('player.store');
     Route::get('{id}/edit', [PlayerController::class, 'edit'])->name('players.edit');
     Route::post('{id}/update', [PlayerController::class, 'update'])->name('players.update');

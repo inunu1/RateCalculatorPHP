@@ -24,7 +24,6 @@ class PlayersTableSeeder extends Seeder
         $lastNames = ['秀生', '智之', '秀介'];
         $firstNames = ['緒方', '今井', '福井'];
         $rates = array(2500, 3000, 2000);
-        $calcrateFlags = [false, false, false];
         
         for ($i = 1; $i <= 3; $i++) {
             DB::table('players')->insert([
@@ -32,7 +31,6 @@ class PlayersTableSeeder extends Seeder
                 'last_name' => $lastNames[$i-1],
                 'first_name' => $firstNames[$i-1],
                 'rating' => $rates[$i-1],
-                'calcrate_flag' => $calcrateFlags[$i-1],
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);

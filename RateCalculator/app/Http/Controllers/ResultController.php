@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GameResult extends Controller
+class Result extends Controller
 {
     //会員登録画面に遷移するメソッド
     public function showCreateForm()
