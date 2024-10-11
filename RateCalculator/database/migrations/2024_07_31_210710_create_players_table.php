@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('first_name',20);
             //レーティング
             $table->integer('rating');
-            //レーティング計算フラグ
-            $table->boolean('calcrate_flag')->default(false);
             //登録日と更新日
             $table->timestamps();
         });

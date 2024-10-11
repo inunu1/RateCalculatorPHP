@@ -1,11 +1,26 @@
-# 会員テーブル設計
+# テーブル設計
 
-| 論理名       | 物理名      | 型               | 属性                  | 説明                |
-|---------------------|--------------------|------------------|-----------------------|---------------------|
-| 会員ID              | player_id          | unsigned integer | primary key, auto increment | ユニークな会員識別子 |
-| 姓                  | last_name          | string           | not null              | 会員の苗字          |
-| 名                  | first_name         | string           | not null              | 会員の名前          |
-| レーティング        | rating             | integer          | not null              | 会員のレーティング  |
-| 登録日              | registered_at      | timestamp        | not null              | 会員登録日          |
-| 更新日              | updated_at         | timestamp        | not null              | レコード更新日      |
-| レーティング計算フラグ | calcrate_flag      | boolean          | default false         | レーティング計算が必要かどうか |
+## 会員 テーブル設計
+
+| 列名         | データ型          | 説明                             |
+|--------------|-------------------|----------------------------------|
+| `id`         | `increments`      | 会員ID（自動増分）              |
+| `last_name`  | `string(20)`      | プレイヤーの姓                   |
+| `first_name` | `string(20)`      | プレイヤーの名                   |
+| `rating`     | `integer`         | プレイヤーのレーティング         |
+| `created_at` | `timestamp`       | 登録日                           |
+| `updated_at` | `timestamp`       | 更新日                           |
+
+## 対局結果 テーブル設計
+
+| 列名                 | データ型          | 説明                               |
+|----------------------|-------------------|------------------------------------|
+| `id`                 | `increments`      | 対局結果のID（自動増分）          |
+| `winner_id`         | `string`          | 勝った人のID                       |
+| `loser_id`          | `string`          | 負けた人のID                       |
+| `winner_rate`       | `integer`         | 勝った人の対局時のレート           |
+| `loser_rate`        | `integer`         | 負けた人の対局時のレート           |
+| `game_date`         | `datetime`        | 対局日時                           |
+| `rating_calculated`  | `boolean`         | レーティング計算フラグ（trueで計算済み） |
+| `created_at`        | `timestamp`       | 登録日                             |
+| `updated_at`        | `timestamp`       | 更新日                  
