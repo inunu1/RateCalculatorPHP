@@ -18,8 +18,8 @@ class PlayerController extends Controller
     {
         // バリデーション
         $validatedData = $request->validate([
-            'last_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'rating' => 'required|integer',
         ]);
 
