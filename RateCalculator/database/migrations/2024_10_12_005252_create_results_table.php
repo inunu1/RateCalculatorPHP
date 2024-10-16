@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('winner_id');
             //負けた人のid
             $table->string('loser_id');
-            //勝った人の対局時のレート
+            //勝者の対局時のレート
             $table->integer('winner_rate');
-            //負けた人の対局時のレート
+            //敗者の対局時のレート
             $table->integer('loser_rate');
             //対局日時
             $table->datetime('game_date');

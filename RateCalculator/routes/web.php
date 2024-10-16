@@ -23,6 +23,7 @@ Route::prefix('players')->group(function () {
 // 対局管理関連のルーティング
 Route::prefix('results')->group(function () {
     Route::get('index', [ResultController::class, 'showIndex'])->name('results.index');
+    Route::get('create', [ResultController::class, 'showCreateForm'])->name('results.create');
 });
 
 // ホーム画面
