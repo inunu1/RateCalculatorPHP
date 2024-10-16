@@ -25,7 +25,7 @@ return new class extends Migration
             //対局日時
             $table->datetime('game_date');
             //レーティング計算フラグ（trueで計算済み）
-            $table->boolean('rating_calculated')->default(false);
+            $table->boolean('calcrate_flag')->default(false);
             //登録日列と更新日列
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Result;
+use App\Models\Player;
 
 class ResultController extends Controller
 {
@@ -28,13 +29,24 @@ class ResultController extends Controller
     {
         // バリデーション
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'rating' => 'required|integer',
+            'winner_id' => 'required|string|max:255',
+            'loser_id'  => 'required|string|max:255',
+            'game_date' => 'required|date',
         ]);
 
-        // データの保存
-        Player::create($validatedData);
+        // 勝者と敗者のレーティングを取得
+        $winner = Player::find($validatedData['winner_id']);
+        $loser = Player::find($validatedData['loser_id']);
+
+        // 結果を保存
+        Result::create([
+            'winner_id' => $validatedData['winner_id'],
+            'loser_id'  => $validatedData['loser_id'],
+            'winner_rate' => $winner->rating,           // 勝者のレート
+            'loser_rate'  => $loser->rating,            // 敗者のレート
+            'game_date'   => $validatedData['game_date'],   // 対局日時
+            'calcrate_flag' => false,                   // 初期はレーティング計算未
+        ]);
 
         return redirect()->route('players.create')->with('success', '会員が登録されました。');
     }

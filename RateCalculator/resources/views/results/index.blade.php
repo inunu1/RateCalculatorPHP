@@ -47,17 +47,17 @@
                                 <td class="py-2 px-4 border-b">{{$result -> updated_at}}</td>
                                 <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->
                                 <td>
-                                    <form action="{{ route('players.edit',['id' => $player -> id]) }}" method="GET">
+                                    <form action="{{ route('results.edit',['id' => $result -> id]) }}" method="GET">
                                         <x-primary-button>
                                             編集
                                         </x-primary-button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="{{ route('players.delete',['id' => $player -> id]) }}" method="POST">
+                                    <form action="{{ route('results.delete',['id' => $result -> id]) }}" method="POST">
                                         @csrf
                                         <x-primary-button>
-                                            出禁
+                                            削除
                                         </x-primary-button>
                                     </form>
                                 </td>

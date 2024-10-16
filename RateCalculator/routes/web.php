@@ -24,6 +24,10 @@ Route::prefix('players')->group(function () {
 Route::prefix('results')->group(function () {
     Route::get('index', [ResultController::class, 'showIndex'])->name('results.index');
     Route::get('create', [ResultController::class, 'showCreateForm'])->name('results.create');
+    Route::post('store', [ResultController::class, 'store'])->name('results.store');
+    Route::get('{id}/edit', [ResultController::class, 'edit'])->name('results.edit');
+    Route::post('{id}/update', [ResultController::class, 'update'])->name('results.update');
+    Route::post('{id}/delete', [ResultController::class, 'delete'])->name('results.delete');
 });
 
 // ホーム画面

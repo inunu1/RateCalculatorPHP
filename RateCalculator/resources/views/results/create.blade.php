@@ -12,7 +12,7 @@
     @endif
  
 
-    <form action="{{ route('player.store') }}" method="POST">
+    <form action="{{ route('results.store') }}" method="POST">
                 @csrf
 
                 <!-- 勝者 -->
