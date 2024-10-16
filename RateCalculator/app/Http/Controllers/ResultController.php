@@ -22,4 +22,20 @@ class ResultController extends Controller
     {
         return view('results/create');
     }
+
+    //会員登録時に動くメソッド
+    public function store(Request $request)
+    {
+        // バリデーション
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'rating' => 'required|integer',
+        ]);
+
+        // データの保存
+        Player::create($validatedData);
+
+        return redirect()->route('players.create')->with('success', '会員が登録されました。');
+    }
 }

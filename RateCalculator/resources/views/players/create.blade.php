@@ -18,7 +18,7 @@
                 <!-- 姓 -->
                 <div class="mb-4">
                     <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">姓</label>
-                    <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}"
+                    <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}"
                            class="border border-gray-300 p-2 rounded px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                            required>
                 </div>
@@ -26,7 +26,7 @@
                 <!-- 名 -->
                 <div class="mb-4">
                     <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">名</label>
-                    <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}"
+                    <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}"
                            class="border border-gray-300 p-2 rounded px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                            required>
                 </div>
