@@ -11,8 +11,10 @@ class ResultController extends Controller
     //対局結果管理画面を表示するメソッド
     public function showIndex()
     {
-        //管理画面にプレイヤーを全件表示
-        $results = Result::all();
+        //管理画面にプレイヤーを全件表示するために勝者と敗者で内部結合する
+        $query = Result::with(['winner','loser']);
+
+        $results = $query->get();
 
         //return view('results/index');
         return view('results/index', ['results' =>$results]);
@@ -29,8 +31,8 @@ class ResultController extends Controller
     {
         // バリデーション
         $validatedData = $request->validate([
-            'winner_id' => 'required|string|max:255',
-            'loser_id'  => 'required|string|max:255',
+            'winner_id' => 'required|integer',
+            'loser_id'  => 'required|integer',
             'game_date' => 'required|date',
         ]);
 
@@ -42,12 +44,12 @@ class ResultController extends Controller
         Result::create([
             'winner_id' => $validatedData['winner_id'],
             'loser_id'  => $validatedData['loser_id'],
-            'winner_rate' => $winner->rating,           // 勝者のレート
-            'loser_rate'  => $loser->rating,            // 敗者のレート
+            'winner_rate' => $winner->rating,               // 勝者のレート
+            'loser_rate'  => $loser->rating,                // 敗者のレート
             'game_date'   => $validatedData['game_date'],   // 対局日時
-            'calcrate_flag' => false,                   // 初期はレーティング計算未
+            'calcrate_flag' => false,                       // 初期はレーティング計算未
         ]);
 
-        return redirect()->route('players.create')->with('success', '会員が登録されました。');
+        return redirect()->route('results.create')->with('success', '対局結果が登録されました');
     }
 }

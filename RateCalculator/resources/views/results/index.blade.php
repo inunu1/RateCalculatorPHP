@@ -41,8 +41,9 @@
                             <tr>
                                 <td class="py-2 px-4 border-b">{{$result -> id}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> first_name}}</td>
-                                <td class="py-2 px-4 border-b">{{$result -> last_name}}</td>
-                                <td class="py-2 px-4 border-b">{{$result -> rating}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> first_name}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> winner_rate}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> loser_rate}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> created_at}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> updated_at}}</td>
                                 <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->

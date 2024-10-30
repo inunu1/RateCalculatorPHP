@@ -16,6 +16,17 @@ class Result extends Model
         'winner_rate',
         'loser_rate',
         'game_date',
-        'rating_calculated',
+        'calcrate_flag',
     ];
+
+    //ResultテーブルはPlayerテーブルに従属する
+    public function winner()
+    {
+        return $this->belongsTo(Player::class, 'winner_id');
+    }
+    
+    public function loser()
+    {
+        return $this->belongsTo(Player::class, 'loser_id');
+    }
 }

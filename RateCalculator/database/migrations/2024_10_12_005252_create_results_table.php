@@ -15,9 +15,9 @@ return new class extends Migration
             //対局結果のid
             $table->increments('id');
             //勝った人のid
-            $table->string('winner_id');
+            $table->integer('winner_id');
             //負けた人のid
-            $table->string('loser_id');
+            $table->integer('loser_id');
             //勝者の対局時のレート
             $table->integer('winner_rate');
             //敗者の対局時のレート

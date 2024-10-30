@@ -16,4 +16,15 @@ class Player extends Model
         'registered_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    //Playerテーブルは多くの対局結果をつかさどる
+    public function resultAsWinner()
+    {
+        return $this->hasMany(Result::class, 'winner_id');
+    }
+    
+    public function resultAsLoser()
+    {
+        return $this->hasMany(Result::class, 'loser_id');
+    }
 }
