@@ -15,6 +15,7 @@ class ResultController extends Controller
         $query = Result::with(['winner','loser']);
 
         $results = $query->get();
+        print($results);
 
         //return view('results/index');
         return view('results/index', ['results' =>$results]);

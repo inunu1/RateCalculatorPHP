@@ -40,8 +40,8 @@
                             @foreach($results as $result)
                             <tr>
                                 <td class="py-2 px-4 border-b">{{$result -> id}}</td>
-                                <td class="py-2 px-4 border-b">{{$result -> first_name}}</td>
-                                <td class="py-2 px-4 border-b">{{$result -> first_name}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> winner -> first_name}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> loser -> first_name}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> winner_rate}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> loser_rate}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> created_at}}</td>
