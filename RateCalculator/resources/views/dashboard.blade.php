@@ -20,6 +20,12 @@
                             対局管理
                         </x-primary-button>
                     </a>
+
+                    <a href="{{ route('results.index') }}">
+                        <x-primary-button>
+                            レーティング計算
+                        </x-primary-button>
+                    </a>
                 </div>
             </div>
         </div>

@@ -15,19 +15,18 @@ class ResultController extends Controller
         $query = Result::with(['winner','loser']);
 
         $results = $query->get();
-        print($results);
 
         //return view('results/index');
         return view('results/index', ['results' =>$results]);
     } 
 
-    //会員登録画面に遷移するメソッド
+    //対局結果登録画面に遷移するメソッド
     public function showCreateForm()
     {
         return view('results/create');
     }
 
-    //会員登録時に動くメソッド
+    //対局結果登録時に動くメソッド
     public function store(Request $request)
     {
         // バリデーション
@@ -52,5 +51,35 @@ class ResultController extends Controller
         ]);
 
         return redirect()->route('results.create')->with('success', '対局結果が登録されました');
+    }
+
+    //対局結果更新画面遷移処理
+    public function edit(int $id)
+    {
+        $result = Result::find($id);
+
+        return view('results/edit', ['result' =>$result]);
+    }
+
+    //対局結果更新保存処理
+    public function update(int $id,Request $request)
+    {
+        print($request);
+        // バリデーション
+        $validatedData = $request->validate([
+            'winner_id' => 'required|integer',
+            'loser_id'  => 'required|integer',
+            'game_date' => 'required|date',
+        ]);
+
+        $results = Result::find($id);
+        $results->winner_id = $request ->winner_id;
+        $results->loser_id = $request ->loser_id; 
+        $results->game_date = $request ->game_date;
+
+        //データの保存
+        $results->update();
+
+        return redirect()->route('results.edit',['id'=>$id])->with('success', '対局結果を更新しました。');
     }
 }

@@ -44,7 +44,7 @@
                                 <td class="py-2 px-4 border-b">{{$result -> loser -> first_name}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> winner_rate}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> loser_rate}}</td>
-                                <td class="py-2 px-4 border-b">{{$result -> created_at}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> game_date}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> updated_at}}</td>
                                 <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->
                                 <td>

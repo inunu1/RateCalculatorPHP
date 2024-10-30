@@ -28,6 +28,9 @@ return new class extends Migration
             $table->boolean('calcrate_flag')->default(false);
             //登録日列と更新日列
             $table->timestamps();
+            // 外部キー制約を追加（`players`テーブルに存在する`id`を参照）
+            $table->foreign('winner_id')->references('id')->on('players')->onDelete('cascade');
+            $table->foreign('loser_id')->references('id')->on('players')->onDelete('cascade');
         });
     }
 
