@@ -4,8 +4,8 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\CalcRateController;
 use Illuminate\Support\Facades\Route;
-
 
 // Test画面
 Route::get('/test', [TestController::class, 'test'])->name('test');
@@ -28,6 +28,11 @@ Route::prefix('results')->group(function () {
     Route::get('{id}/edit', [ResultController::class, 'edit'])->name('results.edit');
     Route::post('{id}/update', [ResultController::class, 'update'])->name('results.update');
     Route::post('{id}/delete', [ResultController::class, 'delete'])->name('results.delete');
+});
+
+// レーティング計算関連のルーティング
+Route::prefix('calcrate')->group(function () {
+    Route::get('index', [CalcRateController::class, 'index'])->name('calcrate.index');
 });
 
 // ホーム画面
