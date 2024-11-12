@@ -21,6 +21,6 @@
 | `winner_rate`       | `integer`         | 勝った人の対局時のレート           |
 | `loser_rate`        | `integer`         | 負けた人の対局時のレート           |
 | `game_date`         | `datetime`        | 対局日時                           |
-| `rating_calculated`  | `boolean`         | レーティング計算フラグ（trueで計算済み） |
+| `calcrate_flag`  | `boolean`         | レーティング計算フラグ（trueで計算済み） |
 | `created_at`        | `timestamp`       | 登録日                             |
 | `updated_at`        | `timestamp`       | 更新日                  
