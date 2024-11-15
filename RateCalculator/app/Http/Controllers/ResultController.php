@@ -50,6 +50,9 @@ class ResultController extends Controller
             'calcrate_flag' => false,                       // 初期はレーティング計算未
         ]);
 
+        // 編集した対局日時より後に行われた対局のレート計算フラグをすべてfalseに
+        Result::where('game_date', '>=', $result->game_date)->update(['calcrate_flag' => false]);
+
         return redirect()->route('results.create')->with('success', '対局結果が登録されました');
     }
 
@@ -64,33 +67,26 @@ class ResultController extends Controller
     //対局結果更新保存処理
     public function update(int $id,Request $request)
     {
-        print($request);
         // バリデーション
         $validatedData = $request->validate([
             'winner_id' => 'required|integer',
             'loser_id'  => 'required|integer',
             'game_date' => 'required|date',
         ]);
-
+        // リクエストで飛んできた対局結果idで対局結果を抽出
         $result = Result::find($id);
-        $preGameDate = $result->game_date;
-
+        // 対局結果テーブルのwinner_idをリクエストで飛んできたものに
         $result->winner_id = $request ->winner_id;
+        // 対局結果テーブルのloser_idをリクエストで飛んできたものに
         $result->loser_id = $request ->loser_id; 
+        // 対局日時をリクエストで飛んできたものに
         $result->game_date = $request ->game_date;
+        // レート計算フラグを未計算に
         $result->calcrate_flag = false;
-
-
-        //データの保存
+        // データの保存
         $result->update();
-
-        //日付の判定するよ
-        $baseReCalcRateDate = $preGameDate;
-        if ($preGameDate > $result->game_date){
-            $baseReCalcRateDate = $result->game_date;
-        } 
-
-        Result::where('game_date', '>=',$baseReCalcRateDate)->update(['calcrate_flag' => false,'winner_rate' =>]);
+        // 編集した対局日時より後に行われた対局のレート計算フラグをすべてfalseに
+        Result::where('game_date', '>=', $result->game_date)->update(['calcrate_flag' => false]);
 
         return redirect()->route('results.edit',['id'=>$id])->with('success', '対局結果を更新しました。');
     }

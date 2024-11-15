@@ -43,7 +43,7 @@ class CalcRateHelper
             $result->calcrate_flag = true;
             $result->winner_rate = $calcResult['winner'];
             $result->loser_rate = $calcResult['loser'];
-            //$result->save();
+            $result->save();
         }
     }
 
