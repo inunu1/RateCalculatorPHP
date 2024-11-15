@@ -72,13 +72,25 @@ class ResultController extends Controller
             'game_date' => 'required|date',
         ]);
 
-        $results = Result::find($id);
-        $results->winner_id = $request ->winner_id;
-        $results->loser_id = $request ->loser_id; 
-        $results->game_date = $request ->game_date;
+        $result = Result::find($id);
+        $preGameDate = $result->game_date;
+
+        $result->winner_id = $request ->winner_id;
+        $result->loser_id = $request ->loser_id; 
+        $result->game_date = $request ->game_date;
+        $result->calcrate_flag = false;
+
 
         //データの保存
-        $results->update();
+        $result->update();
+
+        //日付の判定するよ
+        $baseReCalcRateDate = $preGameDate;
+        if ($preGameDate > $result->game_date){
+            $baseReCalcRateDate = $result->game_date;
+        } 
+
+        Result::where('game_date', '>=',$baseReCalcRateDate)->update(['calcrate_flag' => false,'winner_rate' =>]);
 
         return redirect()->route('results.edit',['id'=>$id])->with('success', '対局結果を更新しました。');
     }

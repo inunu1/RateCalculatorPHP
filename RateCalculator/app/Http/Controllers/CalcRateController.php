@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CalcRateHelper;
 use Illuminate\Http\Request;
+use App\Models\Player;
 
 class CalcRateController extends Controller
 {
@@ -14,7 +15,9 @@ class CalcRateController extends Controller
         $calcRateHelper = new CalcRateHelper();
         $calcRateHelper->calcRate();
 
-        // レーティング計算後にビューを返す（適宜ビュー名を設定）
-        return view('dashboard');
+        //管理画面にプレイヤーを全件表示
+        $players = Player::all();
+        //管理画面にリダイレクト
+        return view('players/index', ['players' =>$players]);
     }
 }

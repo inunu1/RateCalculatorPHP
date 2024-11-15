@@ -12,11 +12,26 @@ class CalcRateHelper
     // レーティング計算を実行
     public function calcRate()
     {
-        // レーティング計算フラグが false の対局結果を取得
-        $results = Result::where('calcrate_flag', false)->get();
+        //calcrate_flagがtrueのレコードを古いgame_date順に取得
+        $trueResults= Result::where('calcrate_flag', true)->orderBy('game_date', 'asc')->get();
+        
+        //calcrate_flagがfalseのレコードを古いgame_date順に取得
+        $results= Result::where('calcrate_flag', false)->orderBy('game_date', 'asc')->get();
 
-        // ループでレーティング計算を実行
+        // $trueResultsの中のwinner_idとloser_idをそれぞれ抽出
+        $trueResultIds = $trueResults->pluck('winner_id')->merge($trueResults->pluck('loser_id'))->unique();
+        dump($trueResultIds);
+        
+        //計算済みの対局結果からプレイヤーの最新レートを取得する
+
+        //playerテーブルから、プレイヤーの最新レートを取得し、連想配列でもつ
+    
+        // 古い順にループでレーティング計算を実行
         foreach ($results as $result) {
+
+            //両対局者それぞれ、過去の対局があるかを判定
+            
+
             // 勝者と敗者のレーティングを計算
             $calcResult = $this->calculateNewRatings($result->winner_id, $result->winner_rate, $result->loser_id, $result->loser_rate);
             
@@ -26,7 +41,9 @@ class CalcRateHelper
 
             // 対局結果のレーティング計算フラグを更新
             $result->calcrate_flag = true;
-            $result->save();
+            $result->winner_rate = $calcResult['winner'];
+            $result->loser_rate = $calcResult['loser'];
+            //$result->save();
         }
     }
 

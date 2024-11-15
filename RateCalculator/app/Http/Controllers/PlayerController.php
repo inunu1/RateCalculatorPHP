@@ -23,6 +23,9 @@ class PlayerController extends Controller
             'rating' => 'required|integer',
         ]);
 
+        // `regist_rating` フィールドに初期の `rating` 値を設定
+        $validatedData['regist_rating'] = $validatedData['rating'];
+
         // データの保存
         Player::create($validatedData);
 

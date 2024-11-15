@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('first_name',20);
             //レーティング
             $table->integer('rating');
+            //登録時レーティング
+            $table->integer('regist_rating');
             //登録日と更新日
             $table->timestamps();
         });

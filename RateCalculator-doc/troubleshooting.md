@@ -22,4 +22,10 @@ Laravel Sailを使用して開発している場合、以下のコマンドを�
 
 ./vendor/bin/sail artisan optimize:clear
 
+# Laravel sailでのマイグレーション
+
+## 1. Laravel Sailでマイグレーションをやり直す
+
+./vendor/bin/sail artisan migrate:fresh
+
 
