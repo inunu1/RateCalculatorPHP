@@ -13,9 +13,13 @@ class CalcRateController extends Controller
     // レーティング計算処理
     public function index()
     {
+        // にゅーする
+        $calcRateHelper = New CalcRateHelper;
         // よくわからんSQL流す、これで現在断面の各プレイヤーのレートを取る
-        $trueResults = DB::select(createGetCurrentRateSql());
-        dump($trueResults);
+        $Results = DB::select($calcRateHelper->createGetCurrentRateSql());
+        dump($Results);
+
+        // 計算済みの対局結果を取得する
         
 
     }

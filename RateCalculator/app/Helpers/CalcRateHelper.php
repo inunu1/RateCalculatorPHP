@@ -94,8 +94,13 @@ class CalcRateHelper
     // 期待されるスコアを計算
     public function createGetCurrentRateSql()
     {   
-        return "SELECT players.id AS player_id, COALESCE(ranked_rates.latest_rate, players.rating) AS latest_rate"
-        ."FROM players LEFT JOIN(SELECT player_id,
+        return "SELECT
+        players.id AS player_id,
+        COALESCE(ranked_rates.latest_rate, players.rating) AS latest_rate
+    FROM
+        players
+    LEFT JOIN(
+        SELECT player_id,
             rate AS latest_rate,
             ROW_NUMBER() OVER(
             PARTITION BY player_id
@@ -126,6 +131,6 @@ class CalcRateHelper
         ON
             players.id = ranked_rates.player_id AND ranked_rates.rn = 1
         ORDER BY
-            players.id;";
+            players.id";
     }
 }
