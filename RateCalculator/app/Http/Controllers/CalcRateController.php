@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Helpers\CalcRateHelper;
 use Illuminate\Http\Request;
 use App\Models\Player;
+use App\Models\Result;
+use Illuminate\Support\Facades\DB;
 
 class CalcRateController extends Controller
 {
     // レーティング計算処理
     public function index()
     {
-        // CalcRateHelperを使ってレーティング計算を実行
-        $calcRateHelper = new CalcRateHelper();
-        $calcRateHelper->calcRate();
+        // よくわからんSQL流す、これで現在断面の各プレイヤーのレートを取る
+        $trueResults = DB::select(createGetCurrentRateSql());
+        dump($trueResults);
+        
 
-        //管理画面にプレイヤーを全件表示
-        $players = Player::all();
-        //管理画面にリダイレクト
-        return view('players/index', ['players' =>$players]);
     }
 }

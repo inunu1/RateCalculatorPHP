@@ -29,6 +29,7 @@
                                 <th class="py-2 px-4 border-b">敗者</th>
                                 <th class="py-2 px-4 border-b">勝者レート</th>
                                 <th class="py-2 px-4 border-b">敗者レート</th>
+                                <th class="py-2 px-4 border-b">計算フラグ</th>
                                 <th class="py-2 px-4 border-b">対局日時</th>
                                 <th class="py-2 px-4 border-b">更新日</th>
                                 <th class="py-2 px-4 border-b">登録日</th>
@@ -44,6 +45,7 @@
                                 <td class="py-2 px-4 border-b">{{$result -> loser -> first_name}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> winner_rate}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> loser_rate}}</td>
+                                <td class="py-2 px-4 border-b">{{$result -> calcrate_flag}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> game_date}}</td>
                                 <td class="py-2 px-4 border-b">{{$result -> updated_at}}</td>
                                 <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->

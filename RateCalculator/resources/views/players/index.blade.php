@@ -28,8 +28,9 @@
                                 <th class="py-2 px-4 border-b">姓</th>
                                 <th class="py-2 px-4 border-b">名</th>
                                 <th class="py-2 px-4 border-b">レート</th>
-                                <th class="py-2 px-4 border-b">更新日</th>
+                                <th class="py-2 px-4 border-b">初期レート</th>
                                 <th class="py-2 px-4 border-b">登録日</th>
+                                <th class="py-2 px-4 border-b">更新日</th>
                                 <th class="py-2 px-4 border-b">操作</th>
                             </tr>
                         </thead>
@@ -41,6 +42,7 @@
                                 <td class="py-2 px-4 border-b">{{$player -> first_name}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> last_name}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> rating}}</td>
+                                <td class="py-2 px-4 border-b">{{$player -> regist_rating}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> created_at}}</td>
                                 <td class="py-2 px-4 border-b">{{$player -> updated_at}}</td>
                                 <!-- todo 二行分削除と更新のボタンを追加する、渡すのはIDを渡す  -->
