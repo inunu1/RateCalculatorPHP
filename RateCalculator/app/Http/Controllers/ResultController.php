@@ -51,7 +51,7 @@ class ResultController extends Controller
         ]);
 
         // 編集した対局日時より後に行われた対局のレート計算フラグをすべてfalseに
-        Result::where('game_date', '>=', $result->game_date)->update(['calcrate_flag' => false]);
+        Result::where('game_date', '>=', $request->game_date)->update(['calcrate_flag' => false]);
 
         return redirect()->route('results.create')->with('success', '対局結果が登録されました');
     }
