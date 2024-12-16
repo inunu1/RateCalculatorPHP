@@ -17,7 +17,13 @@ class CalcRateController extends Controller
         $calcRateHelper = new CalcRateHelper();
 
         // レート未計算の対局を行った各プレイヤー計算開始時点のレートを取得
-        $results = DB::select($calcRateHelper->createGetCurrentRateSql());
+        $dbResults = DB::select($calcRateHelper->createGetCurrentRateSql());
+
+        // プレイヤーIDをキーにした連想配列に変換
+        $results = [];
+        foreach ($dbResults as $row) {
+            $results[$row->player_id] = $row->latest_rate;
+        }
 
         // 未計算の対局結果を取得する
         $falseResults = Result::where('calcrate_flag', false)->get();
@@ -39,7 +45,7 @@ class CalcRateController extends Controller
             $falseResult->winner_rate = $new_winner_rate;
             $falseResult->loser_rate = $new_loser_rate;
             $falseResult->calcrate_flag = true;
-            $falseResult->save();
+            //$falseResult->save();
 
             // 最新のレートを連想配列に更新
             $results[$winner_id] = $new_winner_rate;
