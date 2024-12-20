@@ -42,10 +42,11 @@ class CalcRateController extends Controller
             list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($winner_rate, $loser_rate);
 
             // 対局結果に計算結果を保存
-            $falseResult->winner_rate = $new_winner_rate;
-            $falseResult->loser_rate = $new_loser_rate;
+            $falseResult->winner_rate = $winner_rate;
+            $falseResult->loser_rate = $loser_rate;
             $falseResult->calcrate_flag = true;
-            //$falseResult->save();
+            
+            $falseResult->save();
 
             // 最新のレートを連想配列に更新
             $results[$winner_id] = $new_winner_rate;

@@ -39,7 +39,7 @@ class CalcRateHelper
         FROM
             results
         WHERE
-            game_date < '2024-11-01 03:00:00' AND calcrate_flag = FALSE
+            calcrate_flag = FALSE
         UNION ALL
     SELECT
         loser_id AS player_id,
@@ -48,7 +48,7 @@ class CalcRateHelper
     FROM
         results
     WHERE
-        game_date < '2024-11-01 03:00:00' AND calcrate_flag = FALSE
+        calcrate_flag = FALSE
     ) AS combined_rates) AS ranked_rates
         ON
             players.id = ranked_rates.player_id AND ranked_rates.rn = 1
