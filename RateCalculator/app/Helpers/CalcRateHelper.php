@@ -8,10 +8,22 @@ class CalcRateHelper
 {
     public function calcRate($winner_rate, $loser_rate)
     {
-        // 1500, 1500 を返す処理を修正
-        return [$winner_rate + 10, $loser_rate - 10];
-    }
+        // K係数（レーティング変動の大きさを調整）
+        $kFactor = 32;
 
+        // 勝者の期待勝率を計算
+        $expectedWinRateWinner = 1 / (1 + pow(10, ($loser_rate - $winner_rate) / 400));
+
+        // 敗者の期待勝率を計算
+        $expectedWinRateLoser = 1 / (1 + pow(10, ($winner_rate - $loser_rate) / 400));
+
+        // 勝者と敗者の新しいレーティングを計算
+        $new_winner_rate = $winner_rate + $kFactor * (1 - $expectedWinRateWinner);
+        $new_loser_rate = $loser_rate + $kFactor * (0 - $expectedWinRateLoser);
+
+        // 小数点を四捨五入して整数にする
+        return [round($new_winner_rate), round($new_loser_rate)];
+    }
 
     // エイヤでレート未計算の対局の各対局者の計算開始時点のレートを取得する
     public function createGetCurrentRateSql()
