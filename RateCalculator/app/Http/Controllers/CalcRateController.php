@@ -3,121 +3,78 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CalcRateHelper;
-use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\Result;
-use Illuminate\Support\Facades\DB;
 
 class CalcRateController extends Controller
 {
-    // レーティング計算処理
     public function index()
     {
-        // CalcRateHelperクラスのインスタンスを生成
+        // レート計算ヘルパーのインスタンスを生成
         $calcRateHelper = new CalcRateHelper();
 
-        // レート未計算の対局を行った各プレイヤー計算開始時点のレートを取得
-        $dbResults = DB::select($calcRateHelper->createGetCurrentRateSql());
-        
-        // プレイヤーIDをキーにした連想配列に変換
-        $results = [];
-        foreach ($dbResults as $row) {
-            $results[$row->player_id] = [
-            'latest_rate' => $row->latest_rate,
-            'has_game_experience' => boolval($row->has_game_experience)
-            ];
+        // 未計算の対局結果を取得（ゲーム日時順）
+        $unprocessedResults = Result::where('calcrate_flag', false)
+            ->orderBy('game_date', 'asc')
+            ->get();
+
+        foreach ($unprocessedResults as $result) {
+            $winnerId = $result->winner_id;
+            $loserId = $result->loser_id;
+            dump($result->id);
+
+            // 勝者のレートを取得（過去の対局がない場合は初期レート）
+            $previousWinnerResult = Result::where(function ($query) use ($winnerId) {
+                $query->where('winner_id', $winnerId)
+                      ->orWhere('loser_id', $winnerId);
+            })
+            ->where('game_date', '<', $result->game_date)
+            ->orderBy('game_date', 'desc')
+            ->first();
+
+            $winnerRate = $previousWinnerResult
+            // 過去の対局がある場合はPlayerテーブルのratingを使用
+            ? list($newWinnerRate, $newLoserRate) = $calcRateHelper->calcRate($previousWinnerResult->winner_rate, $previousWinnerResult->loser_rate);
+            // 初期レート
+            : Player::find($winnerId)->regist_rating;
+
+            // 敗者のレートを取得（過去の対局がない場合は初期レート）
+            $previousLoserResult = Result::where(function ($query) use ($loserId) {
+                $query->where('winner_id', $loserId)
+                      ->orWhere('loser_id', $loserId);
+            })
+            ->where('game_date', '<', $result->game_date)
+            ->orderBy('game_date', 'desc')
+            ->first();
+
+            $loserRate = $previousLoserResult
+            ? Player::find($loserId)->rating // 過去の対局がある場合はPlayerテーブルのratingを使用
+            : Player::find($loserId)->regist_rating; // 初期レート
+
+            // 対局開始時点のレートを保存
+            $result->winner_rate = $winnerRate;
+            $result->loser_rate = $loserRate;
+
+            // 対局開始時点のレートでレート計算を実施
+            list($newWinnerRate, $newLoserRate) = $calcRateHelper->calcRate($winnerRate, $loserRate);
+
+            // 計算済みフラグを更新
+            $result->calcrate_flag = true;
+            $result->save();
+
+            // Playersテーブルの最新レートを更新
+            $winner = Player::find($winnerId);
+            $loser = Player::find($loserId);
+
+            $winner->rating = $newWinnerRate;
+            dump($winner->rating);
+            $winner->save();
+
+            $loser->rating = $newLoserRate;
+            dump($loser->rating);
+            $loser->save();
         }
 
-        // 未計算の対局結果を取得する
-        $falseResults = Result::where('calcrate_flag', false)->get();
-
-        // 未計算の対局結果を1件ずつ計算する
-        foreach ($falseResults as $falseResult) {
-            dump($falseResult->id);
-            // 勝者と敗者のIDを取得
-            $winner_id = $falseResult->winner_id;
-            $loser_id = $falseResult->loser_id;
-        
-            // 勝者と敗者のレートを取得
-            $winner_rate = $results[$winner_id]['latest_rate'] ?? Player::find($winner_id)->rating;
-            $loser_rate = $results[$loser_id]['latest_rate'] ?? Player::find($loser_id)->rating;
-        
-            // フラグを取得
-            $winner_has_experience = $results[$winner_id]['has_game_experience'] ?? false;
-            dump($winner_has_experience);
-            $loser_has_experience = $results[$loser_id]['has_game_experience'] ?? false;
-            dump($loser_has_experience);
-            //レーティング計算開始断面時点の勝者側が過去に対局してた場合
-            if ($winner_has_experience) {
-                //過去の対局からレーティング計算開始断面の勝者にとってひとつ前の対局結果を一行取得する
-                $targetResultId = $falseResult->id; // 対象の対局IDを指定
-
-                $previousResult = DB::table('results as r1')
-                    ->join('results as r2', 'r1.winner_id', '=', 'r2.winner_id')
-                    ->where('r1.id', '=', $targetResultId)
-                    ->where('r2.game_date', '<', DB::raw('(SELECT game_date FROM results WHERE id = ' . $targetResultId . ')'))
-                    ->orderBy('r2.game_date', 'desc')
-                    ->select('r2.*')
-                    ->first();
-                dump($previousResult);
-                //ひとつ前の対局結果からR計算し現在のR断面を出す
-                list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($previousResult->winner_rate, $previousResult->loser_rate);
-                
-                list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($new_winner_rate, $loser_rate);
-                
-                $falseResult->winner_rate = $new_winner_rate;
-            } else {
-                // 初対戦の場合はレート計算結果を保存する（必要に応じて意図を調整）
-                list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($winner_rate, $loser_rate);
-                $falseResult->winner_rate = $new_winner_rate;
-            }
-            
-            //レーティング計算開始断面時点の敗者側が過去に対局してた場合
-            if ($loser_has_experience) {
-                $targetResultId = $falseResult->id; // 対象の対局IDを指定
-
-                $previousResult = DB::table('results as r1')
-                    ->join('results as r2', 'r1.loser_id', '=', 'r2.loser_id')
-                    ->where('r1.id', '=', $targetResultId)
-                    ->where('r2.game_date', '<', DB::raw('(SELECT game_date FROM results WHERE id = ' . $targetResultId . ')'))
-                    ->orderBy('r2.game_date', 'desc')
-                    ->select('r2.*')
-                    ->first();
-                dump($previousResult);
-                list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($previousResult->winner_rate, $previousResult->loser_rate);
-                
-                list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($winner_rate, $new_loser_rate);
-                
-                $falseResult->loser_rate = $new_loser_rate;
-            } else {
-                // 初対戦の場合も計算結果を保存する
-                $falseResult->loser_rate = $new_loser_rate;
-            }
-
-            $falseResult->calcrate_flag = true;
-            $falseResult->save();
-        
-            // 最新のレートを連想配列に更新
-            $results[$winner_id]['latest_rate'] = $new_winner_rate;
-            $results[$loser_id]['latest_rate'] = $new_loser_rate;
-        
-            // フラグを保持
-            $results[$winner_id]['has_game_experience'] = true;
-            $results[$loser_id]['has_game_experience'] = true;
-        }
-
-        // Playerテーブルから、レート計算をしたプレイヤーのエンティティを取得
-        $players = Player::whereIn('id', array_keys($results))->get();
-
-        // playersのレートを最新レートで更新
-        foreach ($players as $player) {
-            if (isset($results[$player->id])) {
-                $player->rating = $results[$player->id]['latest_rate']; // 配列から整数値を取得
-                $player->save();
-            }
-        }
-
-        // リダイレクトする
-        //return redirect()->route('results.index')->with('success', 'レーティング計算が完了しました。');
+        return response()->json(['message' => 'レート計算が完了しました。']);
     }
 }
