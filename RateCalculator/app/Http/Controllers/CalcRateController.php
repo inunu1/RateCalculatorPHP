@@ -24,7 +24,7 @@ class CalcRateController extends Controller
         foreach ($dbResults as $row) {
             $results[$row->player_id] = [
             'latest_rate' => $row->latest_rate,
-            'has_game_experience' => $row->has_game_experience
+            'has_game_experience' => boolval($row->has_game_experience)
             ];
         }
 
@@ -40,6 +40,8 @@ class CalcRateController extends Controller
             // 勝者と敗者のレートを取得
             $winner_rate = $results[$winner_id]['latest_rate'] ?? Player::find($winner_id)->rating;
             $loser_rate = $results[$loser_id]['latest_rate'] ?? Player::find($loser_id)->rating;
+            dump($winner_rate);
+            dump($loser_rate);
         
             // フラグを取得
             $winner_has_experience = $results[$winner_id]['has_game_experience'] ?? false;
@@ -47,10 +49,21 @@ class CalcRateController extends Controller
         
             // レーティング計算実施
             list($new_winner_rate, $new_loser_rate) = $calcRateHelper->calcRate($winner_rate, $loser_rate);
-        
+            
             // 対局結果に計算結果を保存
-            $falseResult->winner_rate = $winner_has_experience ? $new_winner_rate : $winner_rate;
-            $falseResult->loser_rate = $loser_has_experience ? $new_loser_rate : $loser_rate;
+            if ($winner_has_experience) {
+                $falseResult->winner_rate = $new_winner_rate;
+            } else {
+                // 初対戦の場合も計算結果を保存する（必要に応じて意図を調整）
+                $falseResult->winner_rate = $winner_rate;
+            }
+            
+            if ($loser_has_experience) {
+                $falseResult->loser_rate = $new_loser_rate;
+            } else {
+                // 初対戦の場合も計算結果を保存する
+                $falseResult->loser_rate = $loser_rate;
+            }
             $falseResult->calcrate_flag = true;
             $falseResult->save();
         

@@ -46,6 +46,8 @@ class ResultController extends Controller
             'loser_id'  => $validatedData['loser_id'],
             'winner_rate' => $winner->rating,               // 勝者のレート
             'loser_rate'  => $loser->rating,                // 敗者のレート
+            'winner_new_rate' => 2000,               // 勝者のレート
+            'loser_new_rate'  => 2000,                // 敗者のレート
             'game_date'   => $validatedData['game_date'],   // 対局日時
             'calcrate_flag' => false,                       // 初期はレーティング計算未
         ]);
