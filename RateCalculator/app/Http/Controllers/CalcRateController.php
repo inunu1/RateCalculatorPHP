@@ -34,7 +34,7 @@ class CalcRateController extends Controller
 
             $winnerRate = $previousWinnerResult
             // 過去の対局がある場合はPlayerテーブルのratingを使用
-            ? list($newWinnerRate, $newLoserRate) = $calcRateHelper->calcRate($previousWinnerResult->winner_rate, $previousWinnerResult->loser_rate);
+            ? $calcRateHelper->calcRate($previousWinnerResult->winner_rate, $previousWinnerResult->loser_rate)[0]
             // 初期レート
             : Player::find($winnerId)->regist_rating;
 
@@ -48,7 +48,7 @@ class CalcRateController extends Controller
             ->first();
 
             $loserRate = $previousLoserResult
-            ? Player::find($loserId)->rating // 過去の対局がある場合はPlayerテーブルのratingを使用
+            ? $calcRateHelper->calcRate($previousWinnerResult->winner_rate, $previousWinnerResult->loser_rate)[1]
             : Player::find($loserId)->regist_rating; // 初期レート
 
             // 対局開始時点のレートを保存
