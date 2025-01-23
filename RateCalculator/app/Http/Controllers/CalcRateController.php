@@ -21,9 +21,7 @@ class CalcRateController extends Controller
         foreach ($unprocessedResults as $result) {
             $winnerId = $result->winner_id;
             $loserId = $result->loser_id;
-            dump($result->id);
 
-            // 勝者のレートを取得（過去の対局がない場合は初期レート）
             $previousWinnerResult = Result::where(function ($query) use ($winnerId) {
                 $query->where('winner_id', $winnerId)
                       ->orWhere('loser_id', $winnerId);
@@ -31,14 +29,31 @@ class CalcRateController extends Controller
             ->where('game_date', '<', $result->game_date)
             ->orderBy('game_date', 'desc')
             ->first();
+            
+            if ($previousWinnerResult) {
+                // 勝者か敗者かを判定
+                if ($previousWinnerResult->winner_id == $winnerId) {
+                    $role = 'winner'; // 勝者として記録
+                    $winnerRate = $calcRateHelper->calcRate(
+                        $previousWinnerResult->winner_rate,
+                        $previousWinnerResult->loser_rate
+                    )[0];
+                } elseif ($previousWinnerResult->loser_id == $winnerId) {
+                    $role = 'loser'; // 敗者として記録
+                    $winnerRate = $calcRateHelper->calcRate(
+                        $previousWinnerResult->winner_rate,
+                        $previousWinnerResult->loser_rate
+                    )[1];
+                }
+            } else {
+                // 過去の対局がない場合は初期レート
+                $role = null; // 対局履歴がない
+                $winnerRate = Player::find($winnerId)->regist_rating;
+            }
+            
+            dump($winnerId);
+            dump($winnerRate);
 
-            $winnerRate = $previousWinnerResult
-            // 過去の対局がある場合はPlayerテーブルのratingを使用
-            ? $calcRateHelper->calcRate($previousWinnerResult->winner_rate, $previousWinnerResult->loser_rate)[0]
-            // 初期レート
-            : Player::find($winnerId)->regist_rating;
-
-            // 敗者のレートを取得（過去の対局がない場合は初期レート）
             $previousLoserResult = Result::where(function ($query) use ($loserId) {
                 $query->where('winner_id', $loserId)
                       ->orWhere('loser_id', $loserId);
@@ -46,11 +61,30 @@ class CalcRateController extends Controller
             ->where('game_date', '<', $result->game_date)
             ->orderBy('game_date', 'desc')
             ->first();
-
-            $loserRate = $previousLoserResult
-            ? $calcRateHelper->calcRate($previousWinnerResult->winner_rate, $previousWinnerResult->loser_rate)[1]
-            : Player::find($loserId)->regist_rating; // 初期レート
-
+            
+            if ($previousLoserResult) {
+                // 敗者か勝者かを判定
+                if ($previousLoserResult->winner_id == $loserId) {
+                    $role = 'winner'; // 勝者として記録
+                    $loserRate = $calcRateHelper->calcRate(
+                        $previousLoserResult->winner_rate,
+                        $previousLoserResult->loser_rate
+                    )[0];
+                } elseif ($previousLoserResult->loser_id == $loserId) {
+                    $role = 'loser'; // 敗者として記録
+                    $loserRate = $calcRateHelper->calcRate(
+                        $previousLoserResult->winner_rate,
+                        $previousLoserResult->loser_rate
+                    )[1];
+                }
+            } else {
+                // 過去の対局がない場合は初期レート
+                $role = null; // 対局履歴がない
+                $loserRate = Player::find($loserId)->regist_rating;
+            }
+            
+            dump($loserId);
+            dump($loserRate);
             // 対局開始時点のレートを保存
             $result->winner_rate = $winnerRate;
             $result->loser_rate = $loserRate;
@@ -67,11 +101,11 @@ class CalcRateController extends Controller
             $loser = Player::find($loserId);
 
             $winner->rating = $newWinnerRate;
-            dump($winner->rating);
+            
             $winner->save();
 
             $loser->rating = $newLoserRate;
-            dump($loser->rating);
+            
             $loser->save();
         }
 
