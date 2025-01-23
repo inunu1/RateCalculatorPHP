@@ -50,9 +50,6 @@ class CalcRateController extends Controller
                 $role = null; // 対局履歴がない
                 $winnerRate = Player::find($winnerId)->regist_rating;
             }
-            
-            dump($winnerId);
-            dump($winnerRate);
 
             $previousLoserResult = Result::where(function ($query) use ($loserId) {
                 $query->where('winner_id', $loserId)
@@ -83,8 +80,6 @@ class CalcRateController extends Controller
                 $loserRate = Player::find($loserId)->regist_rating;
             }
             
-            dump($loserId);
-            dump($loserRate);
             // 対局開始時点のレートを保存
             $result->winner_rate = $winnerRate;
             $result->loser_rate = $loserRate;
@@ -109,6 +104,6 @@ class CalcRateController extends Controller
             $loser->save();
         }
 
-        return response()->json(['message' => 'レート計算が完了しました。']);
+        return redirect()->route('results.index')->with('success', 'レーティング計算が完了しました');
     }
 }
