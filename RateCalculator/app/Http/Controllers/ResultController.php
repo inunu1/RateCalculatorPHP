@@ -92,4 +92,17 @@ class ResultController extends Controller
 
         return redirect()->route('results.edit',['id'=>$id])->with('success', '対局結果を更新しました。');
     }
+
+    //対局結果削除処理
+    public function delete(int $id)
+    {
+        $result = Result::find($id);
+
+        //削除した対局日時より後に行われた対局のレート計算フラグをすべてfalseに
+        Result::where('game_date', '>=', $result->game_date)->update(['calcrate_flag' => false]);
+
+        $result->delete();
+
+        return redirect()->route('results.index')->with('success', '対局結果を削除しました。');
+    }
 }
