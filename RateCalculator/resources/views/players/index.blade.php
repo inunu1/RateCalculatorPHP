@@ -53,14 +53,6 @@
                                         </x-primary-button>
                                     </form>
                                 </td>
-                                <td>
-                                    <form action="{{ route('players.delete',['id' => $player -> id]) }}" method="POST">
-                                        @csrf
-                                        <x-primary-button>
-                                            出禁
-                                        </x-primary-button>
-                                    </form>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
